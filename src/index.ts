@@ -1,1 +1,1 @@
-const test = (sdasda: string) => {};
+const test = (name: string) => {};
