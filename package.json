@@ -12,6 +12,9 @@
     "type": "git",
     "url": "https://github.com/ssynowiec/backend-ems.git"
   },
+  "scripts": {
+    "dev": "tsc -w src/index.ts"
+  },
   "type": "module",
   "engines": {
     "node": ">=18.17.0",
@@ -19,5 +22,9 @@
     "npm": ">=9.8.1",
     "pnpm": ">=8.1.0"
   },
-  "packageManager": "yarn@3.5.0"
+  "packageManager": "yarn@3.5.0",
+  "devDependencies": {
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  }
 }
