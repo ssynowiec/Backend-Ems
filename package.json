@@ -1,0 +1,23 @@
+{
+  "name": "backend-ems",
+  "description": "Backend for EMS",
+  "version": "0.0.1",
+  "keywords": [
+    "backend",
+    "ems"
+  ],
+  "license": "MIT",
+  "author": "Stanisław Synowiec <stasyn1410@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ssynowiec/backend-ems.git"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=18.17.0",
+    "yarn": ">=3.5.0",
+    "npm": ">=9.8.1",
+    "pnpm": ">=8.1.0"
+  },
+  "packageManager": "yarn@3.5.0"
+}
