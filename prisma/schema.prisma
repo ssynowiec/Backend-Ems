@@ -28,15 +28,16 @@ model User {
 }
 
 model Event {
-  id         Int      @id @default(autoincrement())
-  code       String
-  title      String
-  location   String
-  creator    User     @relation(fields: [creator_id], references: [id])
-  creator_id Int
-  published  Boolean  @default(false)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  code        String
+  title       String
+  description String
+  location    String
+  creator     User     @relation(fields: [creator_id], references: [id])
+  creator_id  Int
+  published   Boolean  @default(false)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 
   facebook_link       String?
   facebook_event_id   String?
