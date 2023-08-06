@@ -1,3 +1,2 @@
 .yarn
-.pnp.loader.mjs
-.pnp.cjs
+pnpm-lock.yaml

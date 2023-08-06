@@ -1,38 +1,40 @@
-import fastify from 'fastify';
+import fastify, { type FastifyReply, type FastifyRequest } from 'fastify';
+import fastifyJwt from '@fastify/jwt';
 import { PrismaClient } from '@prisma/client';
 import { userRouter } from './modules/user/user.route';
+import { userSchemas } from './modules/user/user.schema';
+
+declare module 'fastify' {
+	export interface FastifyInstance {
+		authenticate: (
+			request: FastifyRequest,
+			reply: FastifyReply,
+		) => Promise<void>;
+	}
+}
 
 export const prisma = new PrismaClient();
-const server = fastify();
+export const server = fastify();
 
-server.get('/status', async () => {
-	return { status: 'ok' };
+const SECRET_KEY = process.env.SECRET_KEY || 'secret';
+
+server.register(fastifyJwt, {
+	secret: SECRET_KEY,
 });
 
-server.get('/feed', async (req, res) => {
-	return await prisma.post.findMany({
-		where: { published: true },
-		include: { author: true },
-	});
+server.decorate('authenticate', async (request, reply) => {
+	try {
+		await request.jwtVerify();
+	} catch (e) {
+		return reply.send(e);
+	}
 });
 
-server.get('/add', async (req, res) => {
-	// return await prisma.user.create({
-	// 	data: {
-	// 		name: 'Alice',
-	// 		email: 'alice@example.com',
-	// 	},
-	// });
+server.get('/status', async () => ({ status: 'ok' }));
 
-	return await prisma.post.create({
-		data: {
-			title: 'Prisma makes databases easy',
-			content: 'You can query, migrate, and model your database with ease.',
-			published: true,
-			authorId: 1,
-		},
-	});
-});
+for (const schema of [...userSchemas]) {
+	server.addSchema(schema);
+}
 
 const PORT = (process.env.PORT || 3000) as number;
 const start = async () => {
@@ -54,4 +56,4 @@ const start = async () => {
 	}
 };
 
-start();
+await start();
