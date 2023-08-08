@@ -3,6 +3,8 @@ import fastifyJwt from '@fastify/jwt';
 import { PrismaClient } from '@prisma/client';
 import { userRouter } from './modules/user/user.route';
 import { userSchemas } from './modules/user/user.schema';
+import { eventSchemas } from './modules/event/event.schema';
+import { eventRouter } from './modules/event/event.route';
 
 declare module 'fastify' {
 	export interface FastifyInstance {
@@ -32,13 +34,14 @@ server.decorate('authenticate', async (request, reply) => {
 
 server.get('/status', async () => ({ status: 'ok' }));
 
-for (const schema of [...userSchemas]) {
+for (const schema of [...userSchemas, ...eventSchemas]) {
 	server.addSchema(schema);
 }
 
 const PORT = (process.env.PORT || 3000) as number;
 const start = async () => {
 	server.register(userRouter, { prefix: 'api/users' });
+	server.register(eventRouter, { prefix: 'api/events' });
 
 	try {
 		await server.listen({ port: PORT });
