@@ -1,12 +1,11 @@
 import { createUser, findUserByEmail, findUsers } from './user.service';
-import type { FastifyReply, FastifyRequest } from 'fastify';
 import { verifyPassword } from '../../utils/hash';
 import { server } from '../../server';
-import type { LoginInput } from './user.schema';
 import type {
 	createUserSchema,
 	FastifyReplyTypebox,
 	FastifyRequestTypebox,
+	loginSchema,
 } from './user.schema.buckup';
 
 export const registerUserHandler = async (
@@ -26,10 +25,10 @@ export const registerUserHandler = async (
 };
 
 export const loginUserHandler = async (
-	request: FastifyRequest<{
-		Body: LoginInput;
+	request: FastifyRequestTypebox<{
+		body: typeof loginSchema;
 	}>,
-	reply: FastifyReply,
+	reply: FastifyReplyTypebox<typeof loginSchema>,
 ) => {
 	const data = request.body;
 

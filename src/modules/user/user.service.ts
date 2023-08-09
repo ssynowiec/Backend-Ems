@@ -13,13 +13,15 @@ export const createUser = async (data: UserCreateData) => {
 
 	const { salt, hash } = hashPassword(password);
 
-	return await prisma.user.create({
+	const { id, first_name, last_name, email, role } = await prisma.user.create({
 		data: {
 			...rest,
 			salt,
 			password: hash,
 		},
 	});
+
+	return { id, first_name, last_name, email, role };
 };
 
 export const findUserByEmail = (email: string) =>

@@ -47,20 +47,9 @@ export const createUserSchema = Type.Intersect([
 	}),
 ]);
 
-export const createUserResponseSchema = Type.Intersect([
-	userCore,
-	Type.Object({
-		id: Type.Number(),
-	}),
-]);
-
 export const loginSchema = Type.Object({
 	email: Type.String({ format: 'email', errorMessage: 'Email is required' }),
 	password: Type.String({
 		errorMessage: 'Password must be a string',
 	}),
-});
-
-export const loginResponseSchema = Type.Object({
-	accessToken: Type.String(),
 });
