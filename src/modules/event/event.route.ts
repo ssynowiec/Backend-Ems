@@ -8,21 +8,9 @@ import {
 import { $ref } from './event.schema';
 
 export const eventRouter = async (server: FastifyInstance) => {
-	server.get(
-		'/',
-		{
-			preHandler: [server.authenticate],
-		},
-		getAllEventsHandler,
-	);
+	server.get('/', getAllEventsHandler);
 
-	server.get(
-		'/:id',
-		{
-			preHandler: [server.authenticate],
-		},
-		getEventByIdHandler,
-	);
+	server.get('/:id', getEventByIdHandler);
 
 	server.post(
 		'/',

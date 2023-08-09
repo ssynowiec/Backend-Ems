@@ -12,7 +12,7 @@ export const createEventHandler = async (
 	reply: FastifyReply,
 ) => {
 	const data = request.body;
-	const { id: creator_id } = request.params as { id: number };
+	const { id: creator_id } = request.user as { id: number };
 
 	try {
 		const event = await createEvent({ ...data, creator_id: creator_id });
