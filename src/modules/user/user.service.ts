@@ -1,8 +1,14 @@
 import { prisma } from '../../server';
 import { hashPassword } from '../../utils/hash';
-import type { CreateUserInput } from './user.schema';
 
-export const createUser = async (data: CreateUserInput) => {
+interface UserCreateData {
+	email: string;
+	first_name: string;
+	last_name: string;
+	password: string;
+}
+
+export const createUser = async (data: UserCreateData) => {
 	const { password, ...rest } = data;
 
 	const { salt, hash } = hashPassword(password);

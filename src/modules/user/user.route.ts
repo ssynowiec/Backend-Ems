@@ -1,10 +1,9 @@
 import type { FastifyInstance } from 'fastify';
+import { getUsersHandler, registerUserHandler } from './user.controller';
 import {
-	getUsersHandler,
-	loginUserHandler,
-	registerUserHandler,
-} from './user.controller';
-import { $ref } from './user.schema';
+	createUserResponseSchema,
+	createUserSchema,
+} from './user.schema.buckup';
 
 export const userRouter = async (server: FastifyInstance) => {
 	server.get(
@@ -19,25 +18,23 @@ export const userRouter = async (server: FastifyInstance) => {
 		'/register',
 		{
 			schema: {
-				body: $ref('createUserSchema'),
-				response: {
-					201: $ref('createUserResponseSchema'),
-				},
+				body: createUserSchema,
+				response: { 201: createUserResponseSchema },
 			},
 		},
 		registerUserHandler,
 	);
 
-	server.post(
-		'/login',
-		{
-			schema: {
-				body: $ref('loginSchema'),
-				response: {
-					200: $ref('loginResponseSchema'),
-				},
-			},
-		},
-		loginUserHandler,
-	);
+	// server.post(
+	// 	'/login',
+	// 	{
+	// 		schema: {
+	// 			body: loginSchema,
+	// 			response: {
+	// 				200: loginResponseSchema,
+	// 			},
+	// 		},
+	// 	},
+	// 	loginUserHandler,
+	// );
 };

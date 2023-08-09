@@ -5,6 +5,7 @@ import { userRouter } from './modules/user/user.route';
 import { userSchemas } from './modules/user/user.schema';
 import { eventSchemas } from './modules/event/event.schema';
 import { eventRouter } from './modules/event/event.route';
+import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 
 declare module 'fastify' {
 	export interface FastifyInstance {
@@ -16,7 +17,7 @@ declare module 'fastify' {
 }
 
 export const prisma = new PrismaClient();
-export const server = fastify();
+export const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
 const SECRET_KEY = process.env.SECRET_KEY || 'secret';
 
