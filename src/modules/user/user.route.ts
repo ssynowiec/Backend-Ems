@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import {
 	getUsersHandler,
 	loginUserHandler,
+	logoutUserHandler,
 	registerUserHandler,
 } from './user.controller';
 import { createUserSchema, loginSchema } from './user.schema.buckup';
@@ -29,5 +30,13 @@ export const userRouter = async (server: FastifyInstance) => {
 			schema: loginSchema,
 		},
 		loginUserHandler,
+	);
+
+	server.get(
+		'/logout',
+		{
+			preHandler: [server.authenticate],
+		},
+		logoutUserHandler,
 	);
 };

@@ -7,6 +7,7 @@ import type {
 	FastifyRequestTypebox,
 	loginSchema,
 } from './user.schema.buckup';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 export const registerUserHandler = async (
 	request: FastifyRequestTypebox<{ body: typeof createUserSchema }>,
@@ -32,7 +33,7 @@ export const loginUserHandler = async (
 ) => {
 	const data = request.body;
 
-	const user = await findUserByEmail(data.email);
+	const user = await findUserByEmail(data.login);
 
 	if (!user) {
 		return reply.status(401).send({ message: 'Invalid email or password' });
@@ -47,10 +48,26 @@ export const loginUserHandler = async (
 	if (!isPasswordValid) {
 		return reply.status(401).send({ message: 'Invalid email or password' });
 	}
-
+	console.log(data);
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { password, salt, ...rest } = user;
-	return { accessToken: server.jwt.sign(rest) };
+	const token = await server.jwt.sign(rest);
+
+	reply.setCookie('token', token, {
+		path: '/',
+		domain: 'localhost',
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production',
+		expires: new Date(Date.now() + 60 * 60 * 1000 * 24 * 7),
+	});
+};
+
+export const logoutUserHandler = async (
+	request: FastifyRequest,
+	reply: FastifyReply,
+) => {
+	reply.clearCookie('token'); // Usunięcie ciasteczka z tokenem
+	reply.code(200).send({ message: 'Logout successful' });
 };
 
 export const getUsersHandler = async () => await findUsers();

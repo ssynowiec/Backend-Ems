@@ -1,5 +1,7 @@
 import fastify, { type FastifyReply, type FastifyRequest } from 'fastify';
 import fastifyJwt from '@fastify/jwt';
+import cookie, { type FastifyCookieOptions } from '@fastify/cookie';
+import cors from '@fastify/cors';
 import { PrismaClient } from '@prisma/client';
 import { userRouter } from './modules/user/user.route';
 import { userSchemas } from './modules/user/user.schema';
@@ -21,11 +23,28 @@ export const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
 const SECRET_KEY = process.env.SECRET_KEY || 'secret';
 
-server.register(fastifyJwt, {
-	secret: SECRET_KEY,
+server.register(cors, {
+	origin: 'http://localhost:3000',
+	credentials: true,
+	methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 });
 
+server.register(fastifyJwt, {
+	secret: SECRET_KEY,
+	cookie: {
+		cookieName: 'token',
+		signed: false,
+	},
+});
+
+server.register(cookie, {
+	secret: SECRET_KEY,
+	hook: 'onRequest',
+	parseOptions: {},
+} as FastifyCookieOptions);
+
 server.decorate('authenticate', async (request, reply) => {
+	console.log(request.cookies);
 	try {
 		await request.jwtVerify();
 	} catch (e) {
