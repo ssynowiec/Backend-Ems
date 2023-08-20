@@ -12,3 +12,5 @@ node_modules
 .pnp.*
 
 .env
+/node_modules
+/logs

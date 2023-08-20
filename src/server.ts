@@ -22,9 +22,10 @@ export const prisma = new PrismaClient();
 export const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
 const SECRET_KEY = process.env.SECRET_KEY || 'secret';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 
 server.register(cors, {
-	origin: 'http://localhost:3000',
+	origin: FRONTEND_URL,
 	credentials: true,
 	methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 });

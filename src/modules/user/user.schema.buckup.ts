@@ -48,7 +48,7 @@ export const createUserSchema = Type.Intersect([
 ]);
 
 export const loginSchema = Type.Object({
-	email: Type.String({ format: 'email', errorMessage: 'Email is required' }),
+	login: Type.String({ errorMessage: 'Login is required' }),
 	password: Type.String({
 		errorMessage: 'Password must be a string',
 	}),
